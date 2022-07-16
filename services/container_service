@@ -1,0 +1,31 @@
+import 'package:chang_mini/model/bank.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+data = [{ "city":"서울특별시","gu":"용산구", "dong":"용산2가동", "distance":400,"witak":982.100, "dtod":"1,024,100", "woonsong":"1,094,800", "witak":863.100, "dtod":898.600, "woonsong":958.100},
+{ "city":"서울특별시", "gu":"노원구", "dong":"하계1동", "distance":394,"witak":971.600, "dtod":"1,013,600", "woonsong":"1,084,400", "witak":854.800, "dtod":890.200, "woonsong":949.700},
+{ "city":"서울특별시", "gu":"강서구", "dong":"염창동", "distance":410,"witak":999.600, "dtod":"1,041,700", "woonsong":"1,112,500", "witak":876.900, "dtod":912.400, "woonsong":971.900},
+{ "city":"서울특별시", "gu":"강서구", "dong":"공항동", "distance":413,"witak":1,004,800, "dtod":"1,046,900", "woonsong":"1,117,700", "witak":881.000, "dtod":916.500, "woonsong":975.900},
+{ "city":"서울특별시", "gu":"강서구", "dong":"방화2동", "distance":414,"witak":1,006,600, "dtod":"1,048,700", "woonsong":"1,119,500", "witak":882.300, "dtod":917.800, "woonsong":977.300},
+{ "city":"서울특별시", "gu":"구로구", "dong":"구로1동", "distance":405,"witak":990.800, "dtod":"1,032,800", "woonsong":"1,103,600", "witak":870.000, "dtod":905.500, "woonsong":965.000},
+{ "city":"서울특별시", "gu":"구로구", "dong":"고척1동", "distance":405,"witak":990.800, "dtod":"1,032,800", "woonsong":"1,103,600", "witak":870.000, "dtod":905.500, "woonsong":965.000},
+{ "city":"서울특별시", "gu":"구로구", "dong":"수궁동", "distance":409,"witak":997.800, "dtod":"1,039,900", "woonsong":"1,110,700", "witak":875.500, "dtod":911.000, "woonsong":970.400},
+{ "city":"서울특별시", "gu":"구로구", "dong":"개봉1동", "distance":408,"witak":996.100, "dtod":"1,038,200", "woonsong":"1,108,900", "witak":874.200, "dtod":909.700, "woonsong":969.100},
+{ "city":"서울특별시", "gu":"구로구", "dong":"오류2동", "distance":407,"witak":994.300, "dtod":"1,036,400", "woonsong":"1,107,100", "witak":872.800, "dtod":908.300, "woonsong":967.800},
+{ "city":"서울특별시", "gu":"금천구", "dong":"가산동", "distance":403,"witak":987.300, "dtod":"1,029,300", "woonsong":"1,100,100", "witak":867.300, "dtod":902.800, "woonsong":962.200},
+{ "city":"서울특별시", "gu":"금천구", "dong":"독산1동", "distance":401,"witak":983.800, "dtod":"1,025,800", "woonsong":"1,096,600", "witak":864.500, "dtod":900.000, "woonsong":959.400},
+{ "city":"서울특별시", "gu":"강남구", "dong":"삼성1동", "distance":390,"witak":964.600, "dtod":"1,006,600", "woonsong":"1,077,400", "witak":849.200, "dtod":884.600, "woonsong":944.100},
+{ "city":"서울특별시", "gu":"강남구", "dong":"개포1동", "distance":382,"witak":950.400, "dtod":"992.400", "woonsong":"1,063,200", "witak":838.200, "dtod":873.600, "woonsong":933.000},
+{ "city":"서울특별시", "gu":"송파구", "dong":"송파1동", "distance":384,"witak":954.100, "dtod":"996.000", "woonsong":"1,066,800", "witak":840.900, "dtod":876.300, "woonsong":935.800},
+{ "city":"서울특별시", "gu":"송파구", "dong":"가락본동", "distance":383,"witak":952.200, "dtod":"994.200", "woonsong":"1,065,000", "witak":839.600, "dtod":875.000, "woonsong":934.500},
+{ "city":"부산광역시", "gu":"서구", "dong":"남부민1동", "distance":28,"witak":199.200, "dtod":"208.000", "woonsong":"222.300", "witak":179.400, "dtod":186.800, "woonsong":198.900},
+{ "city":"부산광역시", "gu":"서구", "dong":"암남동", "distance":26,"witak":193.100, "dtod":"201.700", "woonsong":"215.800", "witak":174.400, "dtod":181.600, "woonsong":193.400},
+{ "city":"부산광역시", "gu":"동구", "dong":"초량1동", "distance":31,"witak":209.200, "dtod":"218.300", "woonsong":"233.300", "witak":186.700, "dtod":194.400, "woonsong":206.800},
+{ "city":"부산광역시", "gu":"동구", "dong":"좌천동", "distance":33,"witak":216.000, "dtod":"225.300", "woonsong":"240.600", "witak":191.600, "dtod":199.500, "woonsong":212.300},
+{ "city":"부산광역시", "gu":"영도구", "dong":"남항동", "distance":29,"witak":202.500, "dtod":"211.400", "woonsong":"226.000", "witak":181.800, "dtod":189.300, "woonsong":201.500},
+{ "city":"부산광역시", "gu":"영도구", "dong":"청학1동", "distance":31,"witak":209.200, "dtod":"218.300", "woonsong":"233.300", "witak":186.700, "dtod":194.400, "woonsong":206.800},
+{ "city":"부산광역시", "gu":"동래구", "dong":"안락1동", "distance":40,"witak":239.100, "dtod":"249.200", "woonsong":"265.700", "witak":208.500, "dtod":217.000, "woonsong":230.900},
+{ "city":"부산광역시", "gu":"남구", "dong":"용당동", "distance":36,"witak":226.000, "dtod":"235.600", "woonsong":"251.400", "witak":198.800, "dtod":207.000, "woonsong":220.300},
+{ "city":"부산광역시", "gu":"남구", "dong":"감만1동", "distance":36,"witak":226.000, "dtod":"235.600", "woonsong":"251.400", "witak":198.800, "dtod":207.000, "woonsong":220.300}]
+
+
