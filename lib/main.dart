@@ -1,4 +1,6 @@
 //import 'package:chang_mini/services/bank_service.dart';
+import 'package:container_fee_calculator/SJpart.dart';
+import 'package:container_fee_calculator/WYpart.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +62,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
+      theme: ThemeData(
+        fontFamily: 'Noto_Sans_KR',
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
+      ),
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
@@ -88,20 +96,40 @@ class HomePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 60,
             ),
-            Text('시작하기'),
-            SizedBox(
-              height: 40,
+            Text(
+              '시작하기',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+                color: Color.fromARGB(121, 121, 121, 1),
+              ),
             ),
-            Text('안전 운임 계산기로 간편하게 \n예상금액을 조회해 보세요.',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                )),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              '국민 안전 지키는 \n안전 운임제',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              '안전 운임 계산기로 적정 급여를 조회해 보세요.',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
           ],
         ),
       ),
@@ -112,7 +140,17 @@ class HomePage extends StatelessWidget {
             MaterialPageRoute(builder: (context) => CementPage()),
           );
         },
-        child: Text('지금 바로 견적내기'),
+        style: ElevatedButton.styleFrom(
+          fixedSize: Size(450, 55),
+        ),
+        child: Text(
+          '지금 바로 조회하기',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
@@ -298,72 +336,92 @@ class CementPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('1/20 단계')),
-      body: Center(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        title: Text(
+          '1/20 단계',
+          style: TextStyle(
+            color: Color(0xffB4B9C3),
+            fontSize: 16,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 1.0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('운반하시는 품목을 선택해주세요.'),
-            ElevatedButton(
-              onPressed: () {
-                feet = '20ft';
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FeetPage()),
-                );
-              },
-              child: Text('일반 수출입 품목'),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              '운반하시는 품목을\n선택해주세요.',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            SizedBox(
+              height: 60,
             ),
             ElevatedButton(
               onPressed: () {
-                feet = '40ft';
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WoonimPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                fixedSize: Size(374, 55),
+                primary: Colors.white,
+                side: BorderSide(
+                  width: 1.0,
+                  color: Color(0xffDADCE1),
+                ),
+              ),
+              child: Text(
+                '수출입 컨테이너',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff868A93),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CementLocationPage()),
                 );
               },
-              child: Text('시멘트'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CementLocationPage extends StatelessWidget {
-  const CementLocationPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('1/20 단계')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('운반하실 지역을 선택해주세요.'),
-            ElevatedButton(
-              onPressed: () {
-                feet = '20ft';
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PortPage()),
-                );
-              },
-              child: Text('일반 내륙 지역'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                feet = '40ft';
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PortPage()),
-                );
-              },
-              child: Text('제주도'),
+              style: ElevatedButton.styleFrom(
+                fixedSize: Size(374, 55),
+                primary: Colors.white,
+                side: BorderSide(width: 1.0, color: Color(0xffDADCE1)),
+              ),
+              child: Text(
+                '시멘트',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff868A93),
+                ),
+              ),
             ),
           ],
         ),
@@ -440,34 +498,92 @@ class PortPage extends StatefulWidget {
 }
 
 class _PortPageState extends State<PortPage> {
-  List<String> port = ['인천', '부산', '김포'];
+  List<String> port = [
+    '인천',
+    '부산',
+    '김포',
+    'jqkkl',
+    'agh',
+    'arhrh',
+    'rhrhwh',
+    'hewqhhe',
+    'ewherh',
+    'wrehrh',
+    'ehrheh',
+    'qeherh',
+    'ehhrreh',
+    'qeherhrh'
+  ];
   String? selectedDepPort;
   String? selectedLandPort;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('3/20 단계')),
-      body: Center(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        title: Text(
+          '3/20 단계',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 1.0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(
+              height: 20,
+            ),
             Text(
-              '출발/도착 항구를 선택해 주세요.',
+              '기점을 선택해 주세요.',
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontSize: 28,
+                fontWeight: FontWeight.w800,
               ),
             ),
-            Text('출발 항구 선택'),
+            Text(
+              '인천항, 인천신항 선택 시 20% 할증,\n평택항 선택 시 18% 할증이 자동으로 적용됩니다.',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff868A93),
+              ),
+            ),
+            SizedBox(
+              height: 60,
+            ),
+            Text(
+              '기점',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff868A93),
+              ),
+            ),
             DropdownButtonHideUnderline(
               child: DropdownButton2(
+                isExpanded: true,
                 hint: Text(
-                  '출발 항구를 고르세요.',
+                  'ex.부산북항기점',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).hintColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff868A93),
                   ),
                 ),
                 items: port
@@ -476,8 +592,11 @@ class _PortPageState extends State<PortPage> {
                           child: Text(
                             item,
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff868A93),
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ))
                     .toList(),
@@ -487,41 +606,28 @@ class _PortPageState extends State<PortPage> {
                     selectedDepPort = value as String;
                   });
                 },
-                buttonHeight: 40,
-                buttonWidth: 350,
-                itemHeight: 40,
-              ),
-            ),
-            Text('도착항구 선택'),
-            DropdownButtonHideUnderline(
-              child: DropdownButton2(
-                hint: Text(
-                  '도착 항구를 고르세요.',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).hintColor,
-                  ),
+                icon: const Icon(
+                  Icons.arrow_drop_down,
                 ),
-                items: port
-                    .map((item) => DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-                value: selectedLandPort,
-                onChanged: (value) {
-                  setState(() {
-                    selectedLandPort = value as String;
-                  });
-                },
-                buttonHeight: 40,
-                buttonWidth: 350,
-                itemHeight: 40,
+                iconSize: 40,
+                iconEnabledColor: Color(0xff868A93),
+                iconDisabledColor: Colors.black,
+                //buttonHeight: 60,
+                //buttonWidth: 350,
+                //itemHeight: 40,
+                buttonElevation: 2,
+                itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                dropdownMaxHeight: 300,
+                dropdownPadding: null,
+                dropdownDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                ),
+                dropdownElevation: 8,
+                scrollbarRadius: const Radius.circular(40),
+                scrollbarThickness: 6,
+                scrollbarAlwaysShow: true,
+                //offset: const Offset(-20, 0),
               ),
             ),
           ],
@@ -559,88 +665,193 @@ class _DestinationPageState extends State<DestinationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('4/20 단계')),
-      body: Center(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        title: Text(
+          '3/20 단계',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 1.0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('행선지를 선택해 주세요.'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    hint: Text(
-                      '시 선택',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).hintColor,
-                      ),
-                    ),
-                    items: city
-                        .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    value: selectedCity,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedCity = value as String;
-                      });
-                    },
-                    buttonHeight: 40,
-                    buttonWidth: 150,
-                    itemHeight: 40,
-                  ),
-                ),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    hint: Text(
-                      '구 선택',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).hintColor,
-                      ),
-                    ),
-                    items: gu
-                        .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    value: selectedGu,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedGu = value as String;
-                      });
-                    },
-                    buttonHeight: 40,
-                    buttonWidth: 150,
-                    itemHeight: 40,
-                  ),
-                ),
-              ],
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              '행선지를\n선택해 주세요.',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            SizedBox(
+              height: 60,
+            ),
+            Text(
+              '시‧도',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff868A93),
+              ),
             ),
             DropdownButtonHideUnderline(
               child: DropdownButton2(
+                isExpanded: true,
                 hint: Text(
-                  '동 선택',
+                  '시 선택',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).hintColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff868A93),
+                  ),
+                ),
+                items: city
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff868A93),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ))
+                    .toList(),
+                value: selectedCity,
+                onChanged: (value) {
+                  setState(() {
+                    selectedCity = value as String;
+                  });
+                },
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                ),
+                iconSize: 40,
+                iconEnabledColor: Color(0xff868A93),
+                iconDisabledColor: Colors.black,
+                //buttonHeight: 60,
+                //buttonWidth: 350,
+                //itemHeight: 40,
+                buttonElevation: 2,
+                itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                dropdownMaxHeight: 300,
+                dropdownPadding: null,
+                dropdownElevation: 8,
+                dropdownDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                ),
+                scrollbarRadius: const Radius.circular(40),
+                scrollbarThickness: 6,
+                scrollbarAlwaysShow: true,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              '시·군·구',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff868A93),
+              ),
+            ),
+            DropdownButtonHideUnderline(
+              child: DropdownButton2(
+                isExpanded: true,
+                hint: Text(
+                  '시·군·구 선택',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff868A93),
+                  ),
+                ),
+                items: gu
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff868A93),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ))
+                    .toList(),
+                value: selectedGu,
+                onChanged: (value) {
+                  setState(() {
+                    selectedGu = value as String;
+                  });
+                },
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                ),
+                iconSize: 40,
+                iconEnabledColor: Color(0xff868A93),
+                iconDisabledColor: Colors.black,
+                //buttonHeight: 60,
+                //buttonWidth: 350,
+                //itemHeight: 40,
+                buttonElevation: 2,
+                itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                dropdownMaxHeight: 300,
+                dropdownPadding: null,
+                dropdownElevation: 8,
+                dropdownDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                ),
+                scrollbarRadius: const Radius.circular(40),
+                scrollbarThickness: 6,
+                scrollbarAlwaysShow: true,
+                //offset: const Offset(-20, 0),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              '읍·면·동',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff868A93),
+              ),
+            ),
+            DropdownButtonHideUnderline(
+              child: DropdownButton2(
+                isExpanded: true,
+                hint: Text(
+                  '읍·면·동 선택',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff868A93),
                   ),
                 ),
                 items: dong
@@ -649,8 +860,11 @@ class _DestinationPageState extends State<DestinationPage> {
                           child: Text(
                             item,
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff868A93),
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ))
                     .toList(),
@@ -660,268 +874,156 @@ class _DestinationPageState extends State<DestinationPage> {
                     selectedDong = value as String;
                   });
                 },
-                buttonHeight: 40,
-                buttonWidth: 150,
-                itemHeight: 40,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                ),
+                iconSize: 40,
+                iconEnabledColor: Color(0xff868A93),
+                iconDisabledColor: Colors.black,
+                //buttonHeight: 60,
+                //buttonWidth: 350,
+                //itemHeight: 40,
+                buttonElevation: 2,
+                itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                dropdownMaxHeight: 300,
+                dropdownPadding: null,
+                dropdownElevation: 8,
+                dropdownDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                ),
+                scrollbarRadius: const Radius.circular(40),
+                scrollbarThickness: 6,
+                scrollbarAlwaysShow: true,
+                //offset: const Offset(-20, 0),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddpercentPage()),
-                );
-              },
-              child: Text('선택 완료하기'),
-            ),
           ],
         ),
+      ),
+      bottomNavigationBar: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddpercentPage()),
+          );
+        },
+        child: Text('확인'),
       ),
     );
   }
 }
 
-class AddpercentPage extends StatelessWidget {
-  const AddpercentPage({Key? key}) : super(key: key);
+class AddpercentPage extends StatefulWidget {
+  AddpercentPage({Key? key}) : super(key: key);
+
+  @override
+  State<AddpercentPage> createState() => _AddpercentPageState();
+}
+
+class _AddpercentPageState extends State<AddpercentPage> {
+  List<Map<String, dynamic>> tag = [
+    {'option': '통행제한지역 30% ⓘ', 'isCheck': false},
+    {'option': '검색대통과(X-ray) 96,000원', 'isCheck': false},
+    {'option': '산간벽지,오지 20% ⓘ', 'isCheck': false},
+    {'option': '밥테일 1회', 'isCheck': false},
+    {'option': '밥테일 2회', 'isCheck': false},
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('5/20 단계')),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('할증 옵션을 선택해주세요.'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => BobtailPage()),
-                );
-              },
-              child: Text('해당없음'),
+            SizedBox(
+              height: 20,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('통행제한 구역 30%'),
+            Text(
+              '할증 옵션을\n선택해주세요',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w800,
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('검색대 통과 (X-ray_ 96,000원'),
+            Text(
+              '해당하는 옵션을 전부 선택해 주세요',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff868A93),
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('시멘트'),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: tag.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            tag[index]['isCheck'] = !tag[index]['isCheck'];
+                          });
+                          print(tag[index]['isCheck']);
+                          print(tag[index]['option']);
+                        },
+                        style: tag[index]['isCheck']
+                            ? ElevatedButton.styleFrom(
+                                fixedSize: Size(374, 60),
+                                primary: Colors.blue,
+                                side: BorderSide(
+                                  width: 1.0,
+                                  color: Color(0xffDADCE1),
+                                ),
+                              )
+                            : ElevatedButton.styleFrom(
+                                fixedSize: Size(374, 60),
+                                primary: Colors.white,
+                                side: BorderSide(
+                                  width: 1.0,
+                                  color: Color(0xffDADCE1),
+                                ),
+                              ),
+                        child: Text(
+                          tag[index]['option'],
+                          style: tag[index]['isCheck']
+                              ? TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white)
+                              : TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff868A93),
+                                ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class BobtailPage extends StatelessWidget {
-  const BobtailPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('5/20 단계')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('할증 옵션을 선택해주세요.'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ConoptionPage()),
-                );
-              },
-              child: Text('해당없음'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('통행제한 구역 30%'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('검색대 통과 (X-ray_ 96,000원'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('시멘트'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ConoptionPage extends StatelessWidget {
-  const ConoptionPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('5/20 단계')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('할증 옵션을 선택해주세요.'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DangerPage()),
-                );
-              },
-              child: Text('해당없음'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('통행제한 구역 30%'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('검색대 통과 (X-ray_ 96,000원'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('시멘트'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DangerPage extends StatelessWidget {
-  const DangerPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('5/20 단계')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('할증 옵션을 선택해주세요.'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HeavyPage()),
-                );
-              },
-              child: Text('해당없음'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('통행제한 구역 30%'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('검색대 통과 (X-ray_ 96,000원'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('시멘트'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class HeavyPage extends StatelessWidget {
-  const HeavyPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('5/20 단계')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('할증 옵션을 선택해주세요.'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TimePage()),
-                );
-              },
-              child: Text('해당없음'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('통행제한 구역 30%'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('검색대 통과 (X-ray_ 96,000원'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('시멘트'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TimePage extends StatelessWidget {
-  const TimePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('5/20 단계')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('할증 옵션을 선택해주세요.'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PortPage()),
-                );
-              },
-              child: Text('해당없음'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('통행제한 구역 30%'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('검색대 통과 (X-ray_ 96,000원'),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('시멘트'),
-            ),
-          ],
-        ),
+      bottomNavigationBar: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddOptionPage()),
+          );
+        },
+        child: Text('확인'),
       ),
     );
   }
