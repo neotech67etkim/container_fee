@@ -240,3 +240,4 @@ flutter_native_splash:
   #  - 'ios/Runner/Info-Release.plist'
   image: assets/splash.png
   #fullscreen: true
+intl: ^0.16.1

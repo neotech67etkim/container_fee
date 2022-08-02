@@ -1,6 +1,8 @@
 //import 'package:chang_mini/services/bank_service.dart';
 //import 'dart:html';
 
+import 'dart:convert';
+
 import 'package:container_fee_calculator/SJpart.dart';
 import 'package:container_fee_calculator/WYpart.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -10,6 +12,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:intl/intl.dart';
+
+var f = NumberFormat('###,###,###,###');
 
 class Bank {
   String? name;
@@ -36,9 +41,18 @@ class CalculateService extends ChangeNotifier {
   String? pointedCity = '';
   String? pointedDong = '';
   String? pointedGu = '';
+  String? pointedwoonim = '';
+  String? pointedFeet = '';
+  String? pointedPort = '';
+  String? pointedKm = '';
+  int? addingFee = 0;
   int midResult = 0;
   String midResultMenu = '';
   int pointedIndex = 0;
+  List addingOptions = [];
+  List addingFactors = [];
+  int? finalResult = 0;
+  bool addingXray = false;
 
   Map detailValues = {
     "busan2Way": [
@@ -22544,6 +22558,7 @@ class CalculateService extends ChangeNotifier {
   };
 
   void getLocData(String portCondition) {
+    city = [];
     dataList = detailValues[portCondition];
 
     for (int i = 0; i < dataList.length; i++) {
@@ -22602,6 +22617,7 @@ class CalculateService extends ChangeNotifier {
         midResult = (dataList[pointedIndex]['user40ft'] * 1.125).ceil().toInt();
       }
     }
+    pointedKm = dataList[pointedIndex]['distanceKm'].toString();
     notifyListeners();
   }
 }
@@ -22699,7 +22715,7 @@ class HomePage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CementPage()),
+            MaterialPageRoute(builder: (context) => WoonimPage()),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -23000,42 +23016,136 @@ class FeetPage extends StatelessWidget {
     return Consumer<CalculateService>(
       builder: (context, service, child) {
         return Scaffold(
-          appBar: AppBar(title: Text('2/20 단계')),
-          body: Center(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            iconTheme: IconThemeData(
+              color: Colors.black,
+            ),
+            title: Text(
+              '2/20 단계',
+              style: TextStyle(
+                color: Color(0xffB4B9C3),
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 1.0,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(18.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('운반하시는 물류를 선택해주세요.'),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  '운반 컨테이너를\n선택해주세요.',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  '어떤 컨테이너인지 확인이 필요하신가요?',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff868A93),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 ElevatedButton(
                   onPressed: () {
                     service.containerCondition = 'ft20';
+                    service.pointedFeet = '20FT 컨테이너';
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => PortPage()),
                     );
                   },
-                  child: Text('20ft 컨테이너(20톤)'),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(374, 55),
+                    primary: Colors.white,
+                    side: BorderSide(
+                      width: 1.0,
+                      color: Color(0xffDADCE1),
+                    ),
+                  ),
+                  child: Text(
+                    '20ft 컨테이너(20톤)',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff868A93),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 ElevatedButton(
                   onPressed: () {
                     service.containerCondition = 'ft40';
+                    service.pointedFeet = '40FT 컨테이너';
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => PortPage()),
                     );
                   },
-                  child: Text('40ft 컨테이너(23톤)'),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(374, 55),
+                    primary: Colors.white,
+                    side: BorderSide(
+                      width: 1.0,
+                      color: Color(0xffDADCE1),
+                    ),
+                  ),
+                  child: Text(
+                    '40ft 컨테이너(23톤)',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff868A93),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 ElevatedButton(
                   onPressed: () {
                     service.containerCondition = 'ft46';
+                    service.pointedFeet = '46FT 컨테이너';
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => PortPage()),
                     );
                   },
-                  child: Text('46ft 컨테이너(12.5% up)'),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(374, 55),
+                    primary: Colors.white,
+                    side: BorderSide(
+                      width: 1.0,
+                      color: Color(0xffDADCE1),
+                    ),
+                  ),
+                  child: Text(
+                    '46ft 컨테이너(12.5% up)',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff868A93),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -23147,7 +23257,9 @@ class _PortPageState extends State<PortPage> {
                     onChanged: (value) {
                       setState(() {
                         selectedDepPort = value as String;
+                        service.pointedPort = value;
                         service.portCondition = service.portList[value];
+                        service.getLocData(service.portCondition);
                         print(service.portCondition);
                       });
                     },
@@ -23211,8 +23323,6 @@ class _DestinationPageState extends State<DestinationPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CalculateService>(builder: (context, service, child) {
-      service.getLocData(service.portCondition);
-      List city = service.city;
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -23272,7 +23382,7 @@ class _DestinationPageState extends State<DestinationPage> {
                       color: Color(0xff868A93),
                     ),
                   ),
-                  items: city
+                  items: service.city
                       .map((item) => DropdownMenuItem<String>(
                             value: item,
                             child: Text(
@@ -23291,6 +23401,7 @@ class _DestinationPageState extends State<DestinationPage> {
                     setState(() {
                       selectedCity = value as String;
                       gu = [];
+                      dong = [];
                       for (int i = 0; i < service.dataList.length; i++) {
                         if (service.dataList[i]['city'] == selectedCity) {
                           gu.add(service.dataList[i]['gu']);
@@ -23446,6 +23557,8 @@ class _DestinationPageState extends State<DestinationPage> {
                             '주소가 설정되었습니다.'), //snack bar의 내용. icon, button같은것도 가능하다.
                         duration: Duration(seconds: 2), //올라와있는 시간
                       ));
+                      service.getLocData(service.portCondition);
+                      service.getCalculateValue();
                     });
                   },
                   icon: const Icon(
@@ -23498,17 +23611,46 @@ class AddpercentPage extends StatefulWidget {
 
 class _AddpercentPageState extends State<AddpercentPage> {
   List<Map<String, dynamic>> tag = [
-    {'option': '통행제한지역 30% ⓘ', 'isCheck': false},
-    {'option': '검색대통과(X-ray) 96,000원', 'isCheck': false},
-    {'option': '산간벽지,오지 20% ⓘ', 'isCheck': false},
-    {'option': '밥테일 1회', 'isCheck': false},
-    {'option': '밥테일 2회', 'isCheck': false},
+    {
+      'option': '통행제한지역 30%',
+      'isCheck': false,
+      'addingOpt': 30,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '검색대통과(X-ray) 96,000원',
+      'isCheck': false,
+      'addingOpt': '96000',
+      'addingMethod': '+',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '산간벽지,오지 20%',
+      'isCheck': false,
+      'addingOpt': 20,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '밥테일 1회 100%',
+      'isCheck': false,
+      'addingOpt': 100,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
   ];
-
+  List addingFactors = [];
+  int addingFee = 0;
+  bool addingXray = false;
+  double maxFactor = 0;
+  double totalAddingFactor = 0;
+  int maxFactorIndex = 0;
+  List addingOptions = [];
   @override
   Widget build(BuildContext context) {
     return Consumer<CalculateService>(builder: (context, service, child) {
-      service.getCalculateValue();
+      print('기본운임은:');
       print(service.midResult);
       return Scaffold(
         appBar: AppBar(title: Text('5/20 단계')),
@@ -23519,14 +23661,6 @@ class _AddpercentPageState extends State<AddpercentPage> {
             children: [
               SizedBox(
                 height: 20,
-              ),
-              Text(
-                service.midResult.toString(),
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff868A93),
-                ),
               ),
               Text(
                 '할증 옵션을\n선택해주세요',
@@ -23556,10 +23690,73 @@ class _AddpercentPageState extends State<AddpercentPage> {
                           onPressed: () {
                             setState(() {
                               tag[index]['isCheck'] = !tag[index]['isCheck'];
+                              totalAddingFactor = 0;
+                              addingFactors = [];
+                              addingXray = false;
+                              addingOptions = [];
+                              // Xray 조건일 경우엔 addingXray 조정, 다른 조건일땐 addingFactors 조정
+                              for (int i = 0; i < tag.length; i++) {
+                                if (tag[i]['isCheck'] == true) {
+                                  if (tag[i]['option'] ==
+                                      '검색대통과(X-ray) 96,000원') {
+                                    addingXray = true;
+                                    addingOptions.add(tag[i]['option'] + ' 할증');
+                                  } else {
+                                    addingFactors.add(tag[i]['addingOpt']);
+                                    addingOptions.add(tag[i]['option'] + ' 할증');
+                                  }
+                                }
+                              }
+                              print('addingFactors:$addingFactors');
+                              print('addingXray: $addingXray');
+                              service.addingXray = addingXray;
+                              addingFee = 0;
+                              service.addingFactors = addingFactors;
+                              // addingFactors가 없을때, 1개일떄, 2개이상일때를 나누어 addingFee 계산
+                              if (addingFactors.isEmpty) {
+                                totalAddingFactor = 0;
+                                print('factor가 없는경우 $totalAddingFactor');
+                              } else if (addingFactors.length == 1) {
+                                totalAddingFactor = addingFactors[0].toDouble();
+                                print('factor가 1개인 경우 $totalAddingFactor');
+                              } else {
+                                maxFactorIndex = 0;
+                                print('factor가 2개 이상인 경우 $totalAddingFactor');
+                                for (int i = 1; i < addingFactors.length; i++) {
+                                  if (addingFactors[i - 1] < addingFactors[i]) {
+                                    maxFactorIndex = i;
+                                  }
+                                }
+                                for (int i = 0; i < addingFactors.length; i++) {
+                                  if (i == maxFactorIndex) {
+                                    totalAddingFactor =
+                                        totalAddingFactor + addingFactors[i];
+                                  } else {
+                                    totalAddingFactor = totalAddingFactor +
+                                        addingFactors[i] / 2;
+                                  }
+                                }
+                                print(
+                                    'factor가 2개 이상인 경우 결과값: $totalAddingFactor');
+                              }
+                              addingFee = (service.midResult *
+                                      totalAddingFactor.toInt()) ~/
+                                  100;
+                              print('전체 합계는: $totalAddingFactor');
+                              // addingXray 조건에 따라 addingFee에 반영 불반영 결정
+                              if (addingXray == true) {
+                                addingFee = addingFee + 96000;
+                                print('Xray값을 더합니다. $addingFee');
+                              }
+                              print(tag[index]['isCheck']);
+                              print(tag[index]['option']);
+                              print('추가운임:$addingFee');
+                              print('=============================');
+                              service.addingFee = addingFee;
+                              service.addingOptions = addingOptions;
+                              service.finalResult =
+                                  (service.addingFee! + service.midResult)!;
                             });
-                            print(tag[index]['isCheck']);
-                            print(tag[index]['option']);
-                            print(service.midResult);
                           },
                           style: tag[index]['isCheck']
                               ? ElevatedButton.styleFrom(
@@ -23607,10 +23804,1426 @@ class _AddpercentPageState extends State<AddpercentPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddOptionPage()),
+              MaterialPageRoute(builder: (context) => addPecent2Page()),
             );
           },
           child: Text('확인'),
+        ),
+      );
+    });
+  }
+}
+
+class addPecent2Page extends StatefulWidget {
+  const addPecent2Page({Key? key}) : super(key: key);
+
+  @override
+  State<addPecent2Page> createState() => _addPecent2PageState();
+}
+
+bool containerBar = false;
+bool timeBar = false;
+bool dangerBar = false;
+bool weightBar = false;
+List<Map<String, dynamic>> tag2 = [
+  {
+    'option': '심야 (22:00~06:00) 20%',
+    'isCheck': false,
+    'addingOpt': 20,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '도로통행제산 화물 20%',
+    'isCheck': false,
+    'addingOpt': 20,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': 'TANK 컨테이너 30%',
+    'isCheck': false,
+    'addingOpt': 30,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '냉동 컨테이너 30%',
+    'isCheck': false,
+    'addingOpt': 30,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '덤프 컨테이너 25%',
+    'isCheck': false,
+    'addingOpt': 25,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '플레시백 컨테이너 (액체) 20%',
+    'isCheck': false,
+    'addingOpt': 20,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '플레시백 컨테이너 (가루,칩) 10%',
+    'isCheck': false,
+    'addingOpt': 200,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '위험물,유독물,유해화학물질 30%',
+    'isCheck': false,
+    'addingOpt': 30,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '화약물 100%',
+    'isCheck': false,
+    'addingOpt': 100,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '방사성 물질 200%',
+    'isCheck': false,
+    'addingOpt': 200,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '중량물 일반 10%',
+    'isCheck': false,
+    'addingOpt': 10,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '중량물 테레프탈산 10%',
+    'isCheck': false,
+    'addingOpt': 10,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+  {
+    'option': '활대품 (폭,높이,길이초과) 10%',
+    'isCheck': false,
+    'addingOpt': 10,
+    'addingMethod': 'x',
+    'tooltip': '툴팁내용'
+  },
+];
+
+class _addPecent2PageState extends State<addPecent2Page> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CalculateService>(
+      builder: (context, service, child) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            iconTheme: IconThemeData(
+              color: Colors.black,
+            ),
+            title: Text(
+              '2/20 단계',
+              style: TextStyle(
+                color: Color(0xffB4B9C3),
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 1.0,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    '추가 할증 옵션을\n선택해주세요',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    '해당하는 옵션을 전부 선택해 주세요',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff868A93),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      // set 시작 (시간)
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            timeBar = !timeBar;
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              Icons.arrow_upward,
+                              color: Color(0xffB4B9C3),
+                            ),
+                            Text(
+                              '시간',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                            timeBar
+                                ? Icon(
+                                    CupertinoIcons.arrowtriangle_up_fill,
+                                    size: 18,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.arrowtriangle_down_fill,
+                                    size: 18,
+                                  ),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(374, 37),
+                          primary: Color(0xffB4B9C3),
+                          side: BorderSide(
+                            width: 1.0,
+                            color: Color(0xffB4B9C3),
+                          ),
+                        ),
+                      ),
+                      timeBar
+                          ? ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  tag2[0]['isCheck'] = !tag2[0]['isCheck'];
+                                });
+                              },
+                              style: tag2[0]['isCheck']
+                                  ? ElevatedButton.styleFrom(
+                                      fixedSize: Size(374, 60),
+                                      primary: Colors.blue,
+                                      side: BorderSide(
+                                        width: 1.0,
+                                        color: Color(0xffDADCE1),
+                                      ),
+                                    )
+                                  : ElevatedButton.styleFrom(
+                                      fixedSize: Size(374, 60),
+                                      primary: Colors.white,
+                                      side: BorderSide(
+                                        width: 1.0,
+                                        color: Color(0xffDADCE1),
+                                      ),
+                                    ),
+                              child: Text(
+                                tag2[0]['option'].toString(),
+                                style: tag2[0]['isCheck']
+                                    ? TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white)
+                                    : TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff868A93),
+                                      ),
+                              ),
+                            )
+                          : SizedBox(
+                              height: 10,
+                            ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // set 완료(시간)
+                      // set 시작 (컨테이너)
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            containerBar = !containerBar;
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              Icons.arrow_upward,
+                              color: Color(0xffB4B9C3),
+                            ),
+                            Text(
+                              '컨테이너',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                            containerBar
+                                ? Icon(
+                                    CupertinoIcons.arrowtriangle_up_fill,
+                                    size: 18,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.arrowtriangle_down_fill,
+                                    size: 18,
+                                  ),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(374, 37),
+                          primary: Color(0xffB4B9C3),
+                          side: BorderSide(
+                            width: 1.0,
+                            color: Color(0xffB4B9C3),
+                          ),
+                        ),
+                      ),
+                      containerBar
+                          ? Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[1]['isCheck'] = !tag2[1]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[1]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[1]['option'].toString(),
+                                    style: tag2[1]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[2]['isCheck'] = !tag2[2]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[2]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[2]['option'].toString(),
+                                    style: tag2[2]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[3]['isCheck'] = !tag2[3]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[3]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[3]['option'].toString(),
+                                    style: tag2[3]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[4]['isCheck'] = !tag2[4]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[4]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[4]['option'].toString(),
+                                    style: tag2[4]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[5]['isCheck'] = !tag2[5]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[5]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[5]['option'].toString(),
+                                    style: tag2[5]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[6]['isCheck'] = !tag2[6]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[6]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[6]['option'].toString(),
+                                    style: tag2[6]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(
+                              height: 10,
+                            ),
+                      SizedBox(
+                        height: 10,
+                      ), // set 완료 (컨테이너)
+                      // set 시작 (위험물)
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            dangerBar = !dangerBar;
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              Icons.arrow_upward,
+                              color: Color(0xffB4B9C3),
+                            ),
+                            Text(
+                              '위험물',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                            dangerBar
+                                ? Icon(
+                                    CupertinoIcons.arrowtriangle_up_fill,
+                                    size: 18,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.arrowtriangle_down_fill,
+                                    size: 18,
+                                  ),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(374, 37),
+                          primary: Color(0xffB4B9C3),
+                          side: BorderSide(
+                            width: 1.0,
+                            color: Color(0xffB4B9C3),
+                          ),
+                        ),
+                      ),
+                      dangerBar
+                          ? Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[7]['isCheck'] = !tag2[7]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[7]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[7]['option'].toString(),
+                                    style: tag2[7]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[8]['isCheck'] = !tag2[8]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[8]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[8]['option'].toString(),
+                                    style: tag2[8]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(
+                              height: 10,
+                            ),
+                      SizedBox(
+                        height: 10,
+                      ), // set 완료 (위험물)
+                      // set 시작 (중량물)
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            weightBar = !weightBar;
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              Icons.arrow_upward,
+                              color: Color(0xffB4B9C3),
+                            ),
+                            Text(
+                              '중량물',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                            containerBar
+                                ? Icon(
+                                    CupertinoIcons.arrowtriangle_up_fill,
+                                    size: 18,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.arrowtriangle_down_fill,
+                                    size: 18,
+                                  ),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(374, 37),
+                          primary: Color(0xffB4B9C3),
+                          side: BorderSide(
+                            width: 1.0,
+                            color: Color(0xffB4B9C3),
+                          ),
+                        ),
+                      ),
+                      weightBar
+                          ? Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[9]['isCheck'] = !tag2[9]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[9]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[9]['option'].toString(),
+                                    style: tag2[9]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[10]['isCheck'] =
+                                          !tag2[10]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[10]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[10]['option'].toString(),
+                                    style: tag2[10]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      tag2[11]['isCheck'] =
+                                          !tag2[11]['isCheck'];
+                                    });
+                                  },
+                                  style: tag2[11]['isCheck']
+                                      ? ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.blue,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        )
+                                      : ElevatedButton.styleFrom(
+                                          fixedSize: Size(374, 60),
+                                          primary: Colors.white,
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: Color(0xffDADCE1),
+                                          ),
+                                        ),
+                                  child: Text(
+                                    tag2[11]['option'].toString(),
+                                    style: tag2[11]['isCheck']
+                                        ? TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white)
+                                        : TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff868A93),
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(
+                              height: 10,
+                            ),
+                      SizedBox(
+                        height: 10,
+                      ), // set 완료 (컨테이너)
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: ElevatedButton(
+            onPressed: () {
+              double totalAddingFactor = 0;
+              List addingFactors = [];
+              List addingOptions = [];
+              int maxFactorIndex = 0;
+              for (int i = 0; i < tag2.length; i++) {
+                if (tag2[i]['isCheck'] == true) {
+                  addingFactors.add(tag2[i]['addingOpt']);
+                  addingOptions.add(tag2[i]['option'] + ' 할증');
+                }
+              }
+              print('addingFactors:$addingFactors');
+              print(service.addingXray);
+              int addingFee = 0;
+              // addingFactors가 없을때, 1개일떄, 2개이상일때를 나누어 addingFee 계산
+              if (service.addingFactors.isEmpty) {
+                if (addingFactors.isEmpty) {
+                  totalAddingFactor = 0;
+                  print('factor가 없는경우 $totalAddingFactor');
+                } else if (addingFactors.length == 1) {
+                  totalAddingFactor = addingFactors[0].toDouble();
+                  print('factor가 1개인 경우 $totalAddingFactor');
+                } else {
+                  maxFactorIndex = 0;
+                  print('factor가 2개 이상인 경우 $totalAddingFactor');
+                  for (int i = 1; i < addingFactors.length; i++) {
+                    if (addingFactors[i - 1] < addingFactors[i]) {
+                      maxFactorIndex = i;
+                    }
+                  }
+                  for (int i = 0; i < addingFactors.length; i++) {
+                    if (i == maxFactorIndex) {
+                      totalAddingFactor = totalAddingFactor + addingFactors[i];
+                    } else {
+                      totalAddingFactor =
+                          totalAddingFactor + addingFactors[i] / 2;
+                    }
+                  }
+                  print('factor가 2개 이상인 경우 결과값: $totalAddingFactor');
+                }
+              } else {
+                addingFactors = List.from(service.addingFactors)
+                  ..addAll(addingFactors);
+                addingOptions = List.from(service.addingOptions)
+                  ..addAll(addingOptions);
+                if (addingFactors.isEmpty) {
+                  totalAddingFactor = 0;
+                  print('factor가 없는경우 $totalAddingFactor');
+                } else if (addingFactors.length == 1) {
+                  totalAddingFactor = addingFactors[0].toDouble();
+                  print('factor가 1개인 경우 $totalAddingFactor');
+                } else {
+                  maxFactorIndex = 0;
+                  print('factor가 2개 이상인 경우 $totalAddingFactor');
+                  for (int i = 1; i < addingFactors.length; i++) {
+                    if (addingFactors[i - 1] < addingFactors[i]) {
+                      maxFactorIndex = i;
+                    }
+                  }
+                  for (int i = 0; i < addingFactors.length; i++) {
+                    if (i == maxFactorIndex) {
+                      totalAddingFactor = totalAddingFactor + addingFactors[i];
+                    } else {
+                      totalAddingFactor =
+                          totalAddingFactor + addingFactors[i] / 2;
+                    }
+                  }
+                  print('factor가 2개 이상인 경우 결과값: $totalAddingFactor');
+                }
+              }
+              addingFee =
+                  (service.midResult * totalAddingFactor.toInt()) ~/ 100;
+              print('전체 합계는: $totalAddingFactor');
+              // addingXray 조건에 따라 addingFee에 반영 불반영 결정
+              if (service.addingXray == true) {
+                addingFee = addingFee + 96000;
+                print('Xray값을 더합니다. $addingFee');
+              }
+              print('추가운임:$addingFee');
+              print('=============================');
+              service.addingFee = addingFee;
+              service.addingOptions = addingOptions;
+              service.finalResult = (service.addingFee! + service.midResult)!;
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => resultPage()),
+              );
+            },
+            child: Text('확인'),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class resultPage extends StatefulWidget {
+  const resultPage({Key? key}) : super(key: key);
+
+  @override
+  State<resultPage> createState() => _resultPage();
+}
+
+class _resultPage extends State<resultPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CalculateService>(builder: (context, service, child) {
+      return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+          title: Text(
+            '최종 계산 결과',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 1.0,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  children: [
+                    Text(
+                      '기사님의 예상 안전 운임 금액',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff868A93),
+                      ),
+                    ),
+                    Text(
+                      f.format(service.finalResult) + '원',
+                      style: TextStyle(
+                        fontSize: 44,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xff0169FF),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Color(0xff0169FF),
+                    ),
+                    height: 100,
+                    width: 374,
+                    //color: Color(0xff0169FF),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '기본운임',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xffFFFFff),
+                                ),
+                              ),
+                              Text(
+                                f.format(service.midResult) + '원',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xffffffff),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '할증금액',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xffFFFFff),
+                                ),
+                              ),
+                              Text(
+                                f.format(service.addingFee) + '원',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xffFFFFff),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(18, 0, 18, 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                    border: Border.all(
+                      width: 1,
+                      color: Color(0xffB4B9C3),
+                    ),
+                  ),
+                  width: 374,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '선택한 옵션',
+                              style: TextStyle(
+                                color: Color(0xff868A93),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              'ⓘ',
+                              style: TextStyle(
+                                color: Color(0xff868A93),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  child: Chip(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      color: Color(0xff0169FF),
+                                    ),
+                                    padding: EdgeInsets.all(10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    )),
+                                    label: Text(
+                                      service.pointedFeet.toString(),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color(0xff0169FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  child: Chip(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      color: Color(0xff0169FF),
+                                    ),
+                                    padding: EdgeInsets.all(10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    )),
+                                    label: Text(
+                                      service.pointedKm.toString() + 'Km',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color(0xff0169FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: Chip(
+                                backgroundColor: Colors.white,
+                                side: BorderSide(
+                                  color: Color(0xff0169FF),
+                                ),
+                                padding: EdgeInsets.all(10),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                )),
+                                label: Text(
+                                  service.pointedwoonim.toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xff0169FF),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: Chip(
+                                backgroundColor: Colors.white,
+                                side: BorderSide(
+                                  color: Color(0xff0169FF),
+                                ),
+                                padding: EdgeInsets.all(10),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                )),
+                                label: Text(
+                                  service.pointedPort.toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xff0169FF),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  child: Chip(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      color: Color(0xff0169FF),
+                                    ),
+                                    padding: EdgeInsets.all(10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    )),
+                                    label: Text(
+                                      service.pointedCity.toString(),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color(0xff0169FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  child: Chip(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      color: Color(0xff0169FF),
+                                    ),
+                                    padding: EdgeInsets.all(10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    )),
+                                    label: Text(
+                                      service.pointedGu.toString(),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color(0xff0169FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  child: Chip(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      color: Color(0xff0169FF),
+                                    ),
+                                    padding: EdgeInsets.all(10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    )),
+                                    label: Text(
+                                      service.pointedDong.toString(),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color(0xff0169FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '적용 할증',
+                              style: TextStyle(
+                                color: Color(0xff868A93),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              'ⓘ',
+                              style: TextStyle(
+                                color: Color(0xff868A93),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Container(
+                                height: 40 *
+                                    service.addingOptions.length
+                                        .toDouble(), // 나중에 크기가 아이템 갯수와 연동되게 할 것
+                                child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: service.addingOptions.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            CupertinoIcons
+                                                .smallcircle_fill_circle_fill,
+                                            color: Color(0xff0169FF),
+                                          ),
+                                          Text('   '),
+                                          Text(
+                                            service.addingOptions[index]
+                                                .toString(),
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                )),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Divider(
+                              color: Color(0xffF2F2F2),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              '1. 할증률은 기본운임을 기준으로 적용됩니다.',
+                              style: TextStyle(
+                                color: Color(0xff868A93),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '2. 다수의 할증 조항을 적용시, 할증률 중 가장 높은 할증률을 적용한 후, 나머지 할증률은 50%씩만 적용합니다.',
+                              style: TextStyle(
+                                color: Color(0xff868A93),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(182, 55),
+                  primary: Color(0xffEDF3FE),
+                ),
+                onPressed: () {},
+                child: Text(
+                  '내용 복사하기',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff0169FF),
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(182, 55),
+                  primary: Color(0xff0169FF),
+                ),
+                onPressed: () {},
+                child: Text(
+                  '다시 계산하기',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xffFFFFFF),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     });
