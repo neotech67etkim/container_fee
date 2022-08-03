@@ -23639,6 +23639,13 @@ class _AddpercentPageState extends State<AddpercentPage> {
       'addingMethod': 'x',
       'tooltip': '툴팁내용'
     },
+    {
+      'option': '밥테일 2회 200%',
+      'isCheck': false,
+      'addingOpt': 200,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
   ];
   List addingFactors = [];
   int addingFee = 0;
@@ -23755,7 +23762,7 @@ class _AddpercentPageState extends State<AddpercentPage> {
                               service.addingFee = addingFee;
                               service.addingOptions = addingOptions;
                               service.finalResult =
-                                  (service.addingFee! + service.midResult)!;
+                                  (service.addingFee! + service.midResult);
                             });
                           },
                           style: tag[index]['isCheck']
@@ -23821,105 +23828,105 @@ class addPecent2Page extends StatefulWidget {
   State<addPecent2Page> createState() => _addPecent2PageState();
 }
 
-bool containerBar = false;
-bool timeBar = false;
-bool dangerBar = false;
-bool weightBar = false;
-List<Map<String, dynamic>> tag2 = [
-  {
-    'option': '심야 (22:00~06:00) 20%',
-    'isCheck': false,
-    'addingOpt': 20,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '도로통행제산 화물 20%',
-    'isCheck': false,
-    'addingOpt': 20,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': 'TANK 컨테이너 30%',
-    'isCheck': false,
-    'addingOpt': 30,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '냉동 컨테이너 30%',
-    'isCheck': false,
-    'addingOpt': 30,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '덤프 컨테이너 25%',
-    'isCheck': false,
-    'addingOpt': 25,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '플레시백 컨테이너 (액체) 20%',
-    'isCheck': false,
-    'addingOpt': 20,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '플레시백 컨테이너 (가루,칩) 10%',
-    'isCheck': false,
-    'addingOpt': 200,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '위험물,유독물,유해화학물질 30%',
-    'isCheck': false,
-    'addingOpt': 30,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '화약물 100%',
-    'isCheck': false,
-    'addingOpt': 100,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '방사성 물질 200%',
-    'isCheck': false,
-    'addingOpt': 200,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '중량물 일반 10%',
-    'isCheck': false,
-    'addingOpt': 10,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '중량물 테레프탈산 10%',
-    'isCheck': false,
-    'addingOpt': 10,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-  {
-    'option': '활대품 (폭,높이,길이초과) 10%',
-    'isCheck': false,
-    'addingOpt': 10,
-    'addingMethod': 'x',
-    'tooltip': '툴팁내용'
-  },
-];
-
 class _addPecent2PageState extends State<addPecent2Page> {
+  bool containerBar = false;
+  bool timeBar = false;
+  bool dangerBar = false;
+  bool weightBar = false;
+  List<Map<String, dynamic>> tag2 = [
+    {
+      'option': '심야 (22:00~06:00) 20%',
+      'isCheck': false,
+      'addingOpt': 20,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '도로통행제산 화물 20%',
+      'isCheck': false,
+      'addingOpt': 20,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': 'TANK 컨테이너 30%',
+      'isCheck': false,
+      'addingOpt': 30,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '냉동 컨테이너 30%',
+      'isCheck': false,
+      'addingOpt': 30,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '덤프 컨테이너 25%',
+      'isCheck': false,
+      'addingOpt': 25,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '플레시백 컨테이너 (액체) 20%',
+      'isCheck': false,
+      'addingOpt': 20,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '플레시백 컨테이너 (가루,칩) 10%',
+      'isCheck': false,
+      'addingOpt': 200,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '위험물,유독물,유해화학물질 30%',
+      'isCheck': false,
+      'addingOpt': 30,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '화약물 100%',
+      'isCheck': false,
+      'addingOpt': 100,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '방사성 물질 200%',
+      'isCheck': false,
+      'addingOpt': 200,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '중량물 일반 10%',
+      'isCheck': false,
+      'addingOpt': 10,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '중량물 테레프탈산 10%',
+      'isCheck': false,
+      'addingOpt': 10,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+    {
+      'option': '활대품 (폭,높이,길이초과) 10%',
+      'isCheck': false,
+      'addingOpt': 10,
+      'addingMethod': 'x',
+      'tooltip': '툴팁내용'
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CalculateService>(
@@ -24727,7 +24734,7 @@ class _addPecent2PageState extends State<addPecent2Page> {
               print('=============================');
               service.addingFee = addingFee;
               service.addingOptions = addingOptions;
-              service.finalResult = (service.addingFee! + service.midResult)!;
+              service.finalResult = (service.addingFee! + service.midResult);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => resultPage()),
@@ -24923,7 +24930,7 @@ class _resultPage extends State<resultPage> {
                                     side: BorderSide(
                                       color: Color(0xff0169FF),
                                     ),
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(5),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                       Radius.circular(10),
@@ -24946,7 +24953,7 @@ class _resultPage extends State<resultPage> {
                                     side: BorderSide(
                                       color: Color(0xff0169FF),
                                     ),
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(5),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                       Radius.circular(10),
@@ -24970,7 +24977,7 @@ class _resultPage extends State<resultPage> {
                                 side: BorderSide(
                                   color: Color(0xff0169FF),
                                 ),
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(5),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
                                   Radius.circular(10),
@@ -24992,7 +24999,7 @@ class _resultPage extends State<resultPage> {
                                 side: BorderSide(
                                   color: Color(0xff0169FF),
                                 ),
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(5),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
                                   Radius.circular(10),
@@ -25017,7 +25024,7 @@ class _resultPage extends State<resultPage> {
                                     side: BorderSide(
                                       color: Color(0xff0169FF),
                                     ),
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(5),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                       Radius.circular(10),
@@ -25040,7 +25047,7 @@ class _resultPage extends State<resultPage> {
                                     side: BorderSide(
                                       color: Color(0xff0169FF),
                                     ),
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(5),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                       Radius.circular(10),
@@ -25063,7 +25070,7 @@ class _resultPage extends State<resultPage> {
                                     side: BorderSide(
                                       color: Color(0xff0169FF),
                                     ),
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(5),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                       Radius.circular(10),
@@ -25112,7 +25119,7 @@ class _resultPage extends State<resultPage> {
                         child: Column(
                           children: [
                             Container(
-                                height: 40 *
+                                height: 30 *
                                     service.addingOptions.length
                                         .toDouble(), // 나중에 크기가 아이템 갯수와 연동되게 할 것
                                 child: ListView.builder(
